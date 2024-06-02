@@ -33,7 +33,6 @@ public class PlayerManager : MonoBehaviour
         {
             EndGame();
         }
-        Debug.Log(playerScore.GetCurrentScore());
     }
 
     public void AddPlayerScore(float score) {

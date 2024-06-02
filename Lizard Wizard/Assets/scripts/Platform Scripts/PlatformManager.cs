@@ -90,7 +90,7 @@ public class PlatformManager : MonoBehaviour
             foreach (GameObject platform in platforms)
             {
                 //Debug.Log("Platform Y position: " + platform.transform.position.y);
-                if (platform.transform.position.y < waterObject.transform.position.y + 4.73f)
+                if (platform.transform.position.y < waterObject.transform.position.y + 12f)
                 {
                     PlatformMovement platformMovement = platform.GetComponent<PlatformMovement>();
                     if (platformMovement != null)
