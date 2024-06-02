@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda86715ce7de9f4e89c6e1c8641038e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMin: 1
-  speedMax: 4
-  distanceMin: 1
-  distanceMax: 3
+  minSpeed: 2
+  maxSpeed: 8
+  minDistance: 2
+  maxDistance: 8

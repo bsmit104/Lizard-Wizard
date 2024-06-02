@@ -79,4 +79,8 @@ public class PlatformMovement : MonoBehaviour
             currentPosition = startPosition; // Reset current position
         }
     }
+
+    public void ResetMovement() {
+        isEngulfed = false;
+    }
 }
