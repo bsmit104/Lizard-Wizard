@@ -16,9 +16,6 @@ public class PlatformManager : MonoBehaviour
     private float spawnThreshold = 10f;
     private float lastSpawnPositionY;
     private GameObject waterObject;
-    //private List<GameObject> platforms = new List<GameObject>();
-    //private GameObject[] platforms;
-    //private int platformIterator = 0;
     private Queue<GameObject> platforms = new Queue<GameObject>();
 
     void Start()
@@ -26,7 +23,6 @@ public class PlatformManager : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         lastSpawnPositionY = playerTransform.position.y;
 
-        //platforms = new GameObject[maxPlatforms];
         SpawnInitialPlatforms();
 
         waterObject = GameObject.FindGameObjectWithTag("Water").gameObject;
@@ -49,21 +45,6 @@ public class PlatformManager : MonoBehaviour
 
     void SpawnInitialPlatforms()
     {
-        // Vector3 spawnPosition = new Vector3();
-        // for (int i = 0; i < 10; i++)
-        // {
-        //     spawnPosition.y += Random.Range(minY, maxY);
-        //     spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-        //     GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
-        //     platforms.Add(newPlatform);
-        //     lastSpawnPositionY = spawnPosition.y;
-        // }
-
-        // Spawn initial platform below player
-
-        // platforms[0] = Instantiate(platformPrefab, playerTransform.position - new Vector3(0.25f, 1.25f, 0f), Quaternion.identity);
-        // platforms[0].transform.SetParent(GameObject.Find("Platforms").transform);
-
         GameObject newPlatform = Instantiate(platformPrefab, playerTransform.position - new Vector3(0.25f, 1.25f, 0f), Quaternion.identity);
         platforms.Enqueue(newPlatform);
         newPlatform.transform.SetParent(GameObject.Find("Platforms").transform);
@@ -83,30 +64,21 @@ public class PlatformManager : MonoBehaviour
 
     void SpawnPlatform()
     {
-        // Vector3 spawnPosition = new Vector3();
-        // spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
-        // spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-        // GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
-        // platforms.Add(newPlatform);
-        // lastSpawnPositionY = spawnPosition.y;
-
         GameObject newPlatform = platforms.Dequeue();
-        Debug.Log("Dequeuing at "+ newPlatform.transform.position.y);
+        // stop water movement if present
         PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
         platformMovement.ResetMovement();
+        // trigger chance to spawn coin
+        PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
+        platformCoin.SpawnCoin();
 
         Vector3 spawnPosition = new Vector3();
         spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
         spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-
         newPlatform.transform.position = spawnPosition;
+
         platforms.Enqueue(newPlatform);
-        //newPlatform.SetActive(true);
         lastSpawnPositionY = spawnPosition.y;
-        Debug.Log("Spawning at " + spawnPosition.y);
-        
-        //platformIterator = (platformIterator + 1) % maxPlatforms;
-        
     }
 
     IEnumerator CheckWaterLevel()
