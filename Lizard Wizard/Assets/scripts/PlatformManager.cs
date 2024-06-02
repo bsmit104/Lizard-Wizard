@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlatformManager : MonoBehaviour
 {
     public GameObject platformPrefab;
+    public GameObject waterPrefab;
     public float levelWidth = 3f;
     public float minY = 1f;
     public float maxY = 2f;
+    public float waterCheckInterval = 0.5f;
 
     private Transform playerTransform;
-    private float spawnThreshold = 10f; // how far ahead to spawn platforms
+    private float spawnThreshold = 10f;
     private float lastSpawnPositionY;
+    private GameObject waterObject;
+    private List<GameObject> platforms = new List<GameObject>();
 
     void Start()
     {
@@ -19,11 +23,18 @@ public class PlatformManager : MonoBehaviour
         lastSpawnPositionY = playerTransform.position.y;
 
         SpawnInitialPlatforms();
+
+        // Instantiate the water object if it doesn't already exist
+        if (waterObject == null)
+        {
+            waterObject = Instantiate(waterPrefab, new Vector3(0, -5f, 0), Quaternion.identity);
+        }
+
+        StartCoroutine(CheckWaterLevel());
     }
 
     void Update()
     {
-        // Check if the player has moved up enough, spawn more platforms
         if (playerTransform.position.y > lastSpawnPositionY - spawnThreshold)
         {
             SpawnPlatform();
@@ -33,11 +44,12 @@ public class PlatformManager : MonoBehaviour
     void SpawnInitialPlatforms()
     {
         Vector3 spawnPosition = new Vector3();
-        for (int i = 0; i < 10; i++) // determine how many initial platforms to spawn
+        for (int i = 0; i < 10; i++)
         {
             spawnPosition.y += Random.Range(minY, maxY);
             spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-            Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+            GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+            platforms.Add(newPlatform);
             lastSpawnPositionY = spawnPosition.y;
         }
     }
@@ -47,33 +59,30 @@ public class PlatformManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3();
         spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
         spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-        Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+        GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+        platforms.Add(newPlatform);
         lastSpawnPositionY = spawnPosition.y;
     }
+
+    IEnumerator CheckWaterLevel()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waterCheckInterval);
+            Debug.Log("Checking water level... Water Y position: " + waterObject.transform.position.y);
+            foreach (GameObject platform in platforms)
+            {
+                Debug.Log("Platform Y position: " + platform.transform.position.y);
+                if (platform.transform.position.y < waterObject.transform.position.y + 4.73f)
+                {
+                    PlatformMovement platformMovement = platform.GetComponent<PlatformMovement>();
+                    if (platformMovement != null)
+                    {
+                        Debug.Log(platform.name + " is below the water level.");
+                        platformMovement.Engulf();
+                    }
+                }
+            }
+        }
+    }
 }
-
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-
-// public class PlatformManager : MonoBehaviour
-// {
-//     public GameObject platformPrefab;
-//     public int numberOfPlatforms = 10;
-//     public float levelWidth = 3f;
-//     public float minY = 1f;
-//     public float maxY = 2f;
-
-//     void Start()
-//     {
-//         Debug.Log("P Script started");
-//         Vector3 spawnPosition = new Vector3();
-
-//         for (int i = 0; i < numberOfPlatforms; i++)
-//         {
-//             spawnPosition.y += Random.Range(minY, maxY);
-//             spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-//             Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
-//         }
-//     }
-// }
