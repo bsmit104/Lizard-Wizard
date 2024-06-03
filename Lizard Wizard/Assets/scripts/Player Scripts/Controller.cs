@@ -11,7 +11,7 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("C started");
+        //Debug.Log("C started");
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -37,44 +37,44 @@ public class Controller : MonoBehaviour
     //         isGrounded = true;
     //     }
     // }
-// private void OnCollisionEnter2D(Collision2D collision)
-// {
-//     Debug.Log("Collision Detected with: " + collision.collider.name);
-//     // Check if the collision is with a platform from below
-//     if (collision.relativeVelocity.y <= 0)
-//     {
-//         isGrounded = true;
-//         Debug.Log("Doodle is grounded and will jump");
-//     }
-//     else
-//     {
-//         Debug.Log("Collision not suitable for jumping: " + collision.relativeVelocity.y);
-//     }
-// }
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     Debug.Log("Collision Detected with: " + collision.collider.name);
+    //     // Check if the collision is with a platform from below
+    //     if (collision.relativeVelocity.y <= 0)
+    //     {
+    //         isGrounded = true;
+    //         Debug.Log("Doodle is grounded and will jump");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Collision not suitable for jumping: " + collision.relativeVelocity.y);
+    //     }
+    // }
 
-private void OnCollisionEnter2D(Collision2D collision)
-{
-    if (collision.collider.tag == "Platform" && collision.contacts[0].normal.y > 0.5)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        isGrounded = true;
-        Debug.Log("Doodle is grounded and will jump");
+        if (collision.collider.tag == "Platform" && collision.contacts[0].normal.y > 0.5)
+        {
+            isGrounded = true;
+            //Debug.Log("Doodle is grounded and will jump");
+        }
     }
-}
 
-void Update()
-{
-    // horizontal movement
-    float moveInput = Input.GetAxis("Horizontal");
-    rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-
-    // Jump if grounded
-    if (isGrounded && rb.velocity.y <= 0)
+    void Update()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        isGrounded = false; // Reset isGrounded to prevent continuous jumping
-        Debug.Log("Doodle jumped");
+        // horizontal movement
+        float moveInput = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+
+        // Jump if grounded
+        if (isGrounded && rb.velocity.y <= 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            isGrounded = false; // Reset isGrounded to prevent continuous jumping
+                                //Debug.Log("Doodle jumped");
+        }
     }
-}
 }
 // using UnityEngine;
 
