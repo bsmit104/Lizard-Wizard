@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformManager : MonoBehaviour
+public class SpawningManager : MonoBehaviour
 {
     public GameObject platformPrefab;
     public GameObject waterPrefab;
-    public float levelWidth = 3f;
+    public float levelWidth = 5f;
     public float minY = 1f;
     public float maxY = 2f;
     public float waterCheckInterval = 0.5f;
@@ -17,6 +17,12 @@ public class PlatformManager : MonoBehaviour
     private float lastSpawnPositionY;
     private GameObject waterObject;
     private Queue<GameObject> platforms = new Queue<GameObject>();
+
+    public List<GameObject> obstacles;
+    private int platformsToEnemy = 1;
+    private float averagePlatformsToEnemy = 15f;
+    private EnemyBehaviour behaviourScript;
+
 
     void Start()
     {
@@ -65,6 +71,7 @@ public class PlatformManager : MonoBehaviour
     void SpawnPlatform()
     {
         GameObject newPlatform = platforms.Dequeue();
+        platformsToEnemy -= 1;
         // stop water movement if present
         PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
         platformMovement.ResetMovement();
@@ -75,6 +82,19 @@ public class PlatformManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3();
         spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
         spawnPosition.x = Random.Range(-levelWidth, levelWidth);
+
+        if (platformsToEnemy <= 0){
+            GameObject enemy = obstacles[Random.Range(0,obstacles.Count)];
+            behaviourScript = enemy.GetComponent<EnemyBehaviour>();
+            Vector3 enemyPosition = new Vector3();
+            enemyPosition.y = spawnPosition.y;
+            enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
+            int behaviourIndex = Random.Range(1,3);
+            //Debug.Log("new enemy behaviour is: "+behaviourIndex);
+            behaviourScript.changeBehaviour(behaviourIndex);
+            behaviourScript.changePosition(enemyPosition);
+            platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f*averagePlatformsToEnemy , 1.3f*averagePlatformsToEnemy));
+        }
         newPlatform.transform.position = spawnPosition;
 
         platforms.Enqueue(newPlatform);
