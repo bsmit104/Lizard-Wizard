@@ -68,38 +68,85 @@ public class SpawningManager : MonoBehaviour
         }
     }
 
-    void SpawnPlatform()
+void SpawnPlatform()
+{
+    if (platforms.Count == 0) return; // Ensure there are platforms in the queue
+
+    GameObject newPlatform = platforms.Dequeue();
+    platformsToEnemy -= 1;
+
+    // stop water movement if present
+    PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
+    platformMovement.ResetMovement();
+
+    // trigger chance to spawn coin
+    PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
+    platformCoin.SpawnCoin();
+
+    Vector3 spawnPosition = new Vector3();
+    spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
+    spawnPosition.x = Random.Range(-levelWidth, levelWidth);
+
+    if (platformsToEnemy <= 0)
     {
-        GameObject newPlatform = platforms.Dequeue();
-        platformsToEnemy -= 1;
-        // stop water movement if present
-        PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
-        platformMovement.ResetMovement();
-        // trigger chance to spawn coin
-        PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
-        platformCoin.SpawnCoin();
-
-        Vector3 spawnPosition = new Vector3();
-        spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
-        spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-
-        if (platformsToEnemy <= 0){
-            GameObject enemy = obstacles[Random.Range(0,obstacles.Count)];
+        if (obstacles.Count > 0)
+        {
+            GameObject enemy = obstacles[Random.Range(0, obstacles.Count)];
             behaviourScript = enemy.GetComponent<EnemyBehaviour>();
+
             Vector3 enemyPosition = new Vector3();
             enemyPosition.y = spawnPosition.y;
             enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
-            int behaviourIndex = Random.Range(1,3);
-            //Debug.Log("new enemy behaviour is: "+behaviourIndex);
+
+            int behaviourIndex = Random.Range(1, 3);
             behaviourScript.changeBehaviour(behaviourIndex);
             behaviourScript.changePosition(enemyPosition);
-            platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f*averagePlatformsToEnemy , 1.3f*averagePlatformsToEnemy));
-        }
-        newPlatform.transform.position = spawnPosition;
 
-        platforms.Enqueue(newPlatform);
-        lastSpawnPositionY = spawnPosition.y;
+            platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f * averagePlatformsToEnemy, 1.3f * averagePlatformsToEnemy));
+        }
+        else
+        {
+            Debug.LogWarning("No obstacles available to spawn.");
+        }
     }
+
+    newPlatform.transform.position = spawnPosition;
+
+    platforms.Enqueue(newPlatform);
+    lastSpawnPositionY = spawnPosition.y;
+}
+    // void SpawnPlatform()
+    // {
+    //     GameObject newPlatform = platforms.Dequeue();
+    //     platformsToEnemy -= 1;
+    //     // stop water movement if present
+    //     PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
+    //     platformMovement.ResetMovement();
+    //     // trigger chance to spawn coin
+    //     PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
+    //     platformCoin.SpawnCoin();
+
+    //     Vector3 spawnPosition = new Vector3();
+    //     spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
+    //     spawnPosition.x = Random.Range(-levelWidth, levelWidth);
+
+    //     if (platformsToEnemy <= 0){
+    //         GameObject enemy = obstacles[Random.Range(0,obstacles.Count)];
+    //         behaviourScript = enemy.GetComponent<EnemyBehaviour>();
+    //         Vector3 enemyPosition = new Vector3();
+    //         enemyPosition.y = spawnPosition.y;
+    //         enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
+    //         int behaviourIndex = Random.Range(1,3);
+    //         //Debug.Log("new enemy behaviour is: "+behaviourIndex);
+    //         behaviourScript.changeBehaviour(behaviourIndex);
+    //         behaviourScript.changePosition(enemyPosition);
+    //         platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f*averagePlatformsToEnemy , 1.3f*averagePlatformsToEnemy));
+    //     }
+    //     newPlatform.transform.position = spawnPosition;
+
+    //     platforms.Enqueue(newPlatform);
+    //     lastSpawnPositionY = spawnPosition.y;
+    // }
 
     IEnumerator CheckWaterLevel()
     {
