@@ -43,7 +43,7 @@ public class PlatformDecorator : MonoBehaviour
     string GenerateRandomText()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        char[] stringChars = new char[8];
+        char[] stringChars = new char[7];
 
         for (int i = 0; i < stringChars.Length; i++)
         {
