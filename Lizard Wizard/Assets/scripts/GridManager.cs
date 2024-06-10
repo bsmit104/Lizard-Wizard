@@ -29,7 +29,7 @@ public class GridManager : MonoBehaviour
         gridTop = numRows;
         grid = new char[numCols, numRows];
         bookcasePickerY = Mathf.Floor(Random.value * 100f);
-        GenerateGrid(ref grid, 0, false);
+        GenerateGrid(ref grid, 200000, false);
         DrawGrid(grid, 0);
     }
 
