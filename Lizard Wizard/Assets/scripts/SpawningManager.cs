@@ -134,6 +134,9 @@ public class SpawningManager : MonoBehaviour
             // Activate the library background if not already activated
             if (!libraryBackground.activeSelf)
             {
+                Vector3 newPosition = libraryBackground.transform.position;
+                newPosition.y = 50;
+                libraryBackground.transform.position = newPosition;
                 libraryBackground.SetActive(true);
             }
         }

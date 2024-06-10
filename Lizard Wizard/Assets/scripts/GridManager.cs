@@ -70,6 +70,10 @@ public class GridManager : MonoBehaviour
         // Draw the new grid
         DrawGrid(grid, gridTop - 1);
         gridTop += numRows / 2;
+
+        Vector3 newPosition = tilemap.transform.position;
+        newPosition.y = 0;
+        tilemap.transform.position = newPosition;
     }
 
     void ClearBottomRows()
