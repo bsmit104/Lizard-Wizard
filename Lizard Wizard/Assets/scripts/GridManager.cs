@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     public int numCols = 32;
     public int numRows = 32;
 
-    public int maxY = 1000;
+    public int maxY = -1;
 
     public Camera mainCamera; // Reference to the main camera
 
@@ -35,7 +35,7 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsCameraNearTop() && (gridTop - 10 < maxY))
+        if (IsCameraNearTop() && maxY > 0 && (gridTop - 10 < maxY))
         {
             MoveGridUp();
         }
