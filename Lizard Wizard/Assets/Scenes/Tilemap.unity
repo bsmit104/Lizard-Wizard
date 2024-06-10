@@ -138,8 +138,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 14622907}
   tilePalette: {fileID: 1822182557}
+  numCols: 15
   numRows: 100
-  numCols: 100
+  maxY: 500
+  mainCamera: {fileID: 1985155903}
 --- !u!1839735485 &14622907 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 8562538921327150857, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
@@ -2727,8 +2729,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -3068,6 +3070,30 @@ PrefabInstance:
     - target: {fileID: 8562538921327150857, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
       propertyPath: m_Tiles.Array.data[7].second.m_TileObjectToInstantiateIndex
       value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
