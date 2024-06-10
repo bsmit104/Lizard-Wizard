@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawningManager : MonoBehaviour
 {
-    public GameObject desertPlatformPrefab;
     public GameObject platformPrefab; // Second platform prefab
     public GameObject waterPrefab;
     public GameObject libraryBackground; // Background object to activate
@@ -13,7 +12,6 @@ public class SpawningManager : MonoBehaviour
     public float maxY = 2f;
     public float waterCheckInterval = 0.5f;
     public int maxPlatforms = 20;
-    public int changeWhen = 10; // Number of platforms before switching
 
     private Transform playerTransform;
     private float spawnThreshold = 10f;
@@ -124,27 +122,6 @@ public class SpawningManager : MonoBehaviour
             {
                 Debug.LogWarning("No obstacles available to spawn.");
             }
-        }
-
-        // Check if the platform count has reached the changeWhen value
-        if (platformCount >= changeWhen)
-        {
-            // Use the desert platform prefab
-            newPlatform = Instantiate(desertPlatformPrefab, spawnPosition, Quaternion.identity);
-            // Activate the library background if not already activated
-            if (!libraryBackground.activeSelf)
-            {
-                Vector3 newPosition = libraryBackground.transform.position;
-                newPosition.y = 50;
-                libraryBackground.transform.position = newPosition;
-                libraryBackground.SetActive(true);
-                Debug.Log("TEST!");
-            }
-        }
-        else
-        {
-            // Use the regular platform prefab
-            newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
         }
 
         newPlatform.transform.position = spawnPosition;
