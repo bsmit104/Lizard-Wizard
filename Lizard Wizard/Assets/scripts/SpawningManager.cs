@@ -22,6 +22,7 @@ public class SpawningManager : MonoBehaviour
     private Queue<GameObject> platforms = new Queue<GameObject>();
 
     public List<GameObject> obstacles;
+    public GameObject enemyPrefab;
     private int platformsToEnemy = 1;
     private float averagePlatformsToEnemy = 15f;
     private EnemyBehaviour behaviourScript;
@@ -33,6 +34,7 @@ public class SpawningManager : MonoBehaviour
         lastSpawnPositionY = playerTransform.position.y;
 
         SpawnInitialPlatforms();
+        SpawnInitialEnemies();
 
         waterObject = GameObject.FindGameObjectWithTag("Water").gameObject;
         // Instantiate the water object if it doesn't already exist
@@ -70,6 +72,15 @@ public class SpawningManager : MonoBehaviour
             platformCount++;
 
             newPlatform.transform.SetParent(GameObject.Find("Platforms").transform);
+        }
+    }
+
+    void SpawnInitialEnemies(){
+        Vector3 spawnPoint = new Vector3(0,-30,0);
+        for (int i = 0; i < 6; i+=1)
+        {  
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+            obstacles.Add(newEnemy);
         }
     }
 
