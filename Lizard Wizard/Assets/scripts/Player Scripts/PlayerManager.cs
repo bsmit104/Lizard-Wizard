@@ -11,11 +11,11 @@ public class PlayerManager : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerScore playerScore;
 
-    void Awake() 
+    void Awake()
     {
-        if (Instance != null && Instance != this) 
+        if (Instance != null && Instance != this)
             Destroy(gameObject);
-        else 
+        else
             Instance = this;
     }
 
@@ -35,15 +35,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void AddPlayerScore(float score) {
+    public void AddPlayerScore(float score)
+    {
         playerScore.AddScore(score);
     }
 
-    public void ChangePlayerHealth(int healthChange) {
+    public void ChangePlayerHealth(int healthChange)
+    {
         playerHealth.ChangeHealth(healthChange);
     }
 
-    public void EndGame() {
+    public void EndGame()
+    {
         // end game
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
