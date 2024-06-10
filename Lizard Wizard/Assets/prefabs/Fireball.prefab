@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3968433565197233426}
   - component: {fileID: 8010939831545263537}
   - component: {fileID: 2479036908028751558}
-  - component: {fileID: 5612784536408839293}
+  - component: {fileID: 1777055317455315597}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.39, y: -26.31, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -6448639282823022327, guid: 7f745294c1f78714083127bd5ab923a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 2
---- !u!58 &5612784536408839293
-CircleCollider2D:
+--- !u!70 &1777055317455315597
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -163,5 +163,6 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.49999997
+  m_Offset: {x: 0, y: 0.0035486221}
+  m_Size: {x: 0.17, y: 0.3}
+  m_Direction: 0

@@ -32,7 +32,7 @@ public class SpawningManager : MonoBehaviour
         lastSpawnPositionY = playerTransform.position.y;
 
         SpawnInitialPlatforms();
-        SpawnInitialEnemies();
+        //SpawnInitialEnemies();
 
         waterObject = GameObject.FindGameObjectWithTag("Water").gameObject;
         // Instantiate the water object if it doesn't already exist
@@ -105,14 +105,13 @@ public class SpawningManager : MonoBehaviour
         {
             if (obstacles.Count > 0)
             {
-                GameObject enemy = obstacles[Random.Range(0, obstacles.Count)];
+                int behaviourIndex = Random.Range(1, obstacles.Count+1);
+                GameObject enemy = obstacles[behaviourIndex-1];
                 behaviourScript = enemy.GetComponent<EnemyBehaviour>();
 
                 Vector3 enemyPosition = new Vector3();
                 enemyPosition.y = spawnPosition.y;
                 enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
-
-                int behaviourIndex = Random.Range(1, 3);
                 behaviourScript.changeBehaviour(behaviourIndex);
                 behaviourScript.changePosition(enemyPosition);
 
