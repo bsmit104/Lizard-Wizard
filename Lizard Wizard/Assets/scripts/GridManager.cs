@@ -180,14 +180,14 @@ public class GridManager : MonoBehaviour
         return code;
     }
 
-    void DrawContext(char[,] grid, int i, int j, char[] targets, int ti, int tj)
+    void DrawContext(char[,] grid, int i, int j, char[] targets, int ti, int tj, int startRow)
     {
         int code = NeighborsCode(grid, i, j, targets);
 
         // Render inside corners/edges
         foreach (var offsets in lookup[code & 15])
         {
-            PlaceTile(i, j, ti + offsets[0], tj + offsets[1]);
+            PlaceTile(i, j + startRow, ti + offsets[0], tj + offsets[1]);
         }
     }
 
@@ -258,7 +258,7 @@ public class GridManager : MonoBehaviour
                     }
 
                     // Wood Wall & Floor into Bookshelf
-                    DrawContext(grid, i, j + startRow, new char[] { '-', '#' }, 4, 0);
+                    DrawContext(grid, i, j, new char[] { '-', '#' }, 4, 0, startRow);
                 }
 
                 if (GridCheck(grid, i, j, new char[] { '%' }))
@@ -279,7 +279,7 @@ public class GridManager : MonoBehaviour
                     {
                         PlaceTile(i, j + startRow, 9, 3); // Skull
                     }
-                    DrawContext(grid, i, j + startRow, new char[] { '-', '#', '%' }, 4, 3);
+                    DrawContext(grid, i, j, new char[] { '-', '#', '%' }, 4, 3, startRow);
 
                 }
             }
