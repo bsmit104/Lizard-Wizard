@@ -9,10 +9,13 @@ public class Controller : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
 
+    public Animator anim;
+
     void Start()
     {
         //Debug.Log("C started");
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // void Update()
@@ -73,6 +76,10 @@ public class Controller : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isGrounded = false; // Reset isGrounded to prevent continuous jumping
                                 //Debug.Log("Doodle jumped");
+            anim.Play("Lizard_Jump");
+        }
+        if (rb.velocity.y<=1){
+            anim.Play("Lizard_Idle");
         }
     }
 }
