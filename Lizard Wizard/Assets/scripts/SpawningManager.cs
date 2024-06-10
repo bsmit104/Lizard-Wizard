@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class SpawningManager : MonoBehaviour
 {
-    public GameObject platformPrefab;
+    public GameObject desertPlatformPrefab;
+    public GameObject platformPrefab; // Second platform prefab
     public GameObject waterPrefab;
+    public GameObject libraryBackground; // Background object to activate
     public float levelWidth = 5f;
     public float minY = 1f;
     public float maxY = 2f;
     public float waterCheckInterval = 0.5f;
     public int maxPlatforms = 20;
+    public int changeWhen = 10; // Number of platforms before switching
 
     private Transform playerTransform;
     private float spawnThreshold = 10f;
@@ -22,7 +25,7 @@ public class SpawningManager : MonoBehaviour
     private int platformsToEnemy = 1;
     private float averagePlatformsToEnemy = 15f;
     private EnemyBehaviour behaviourScript;
-
+    private int platformCount = 0; // Track number of platforms spawned
 
     void Start()
     {
@@ -54,6 +57,7 @@ public class SpawningManager : MonoBehaviour
         GameObject newPlatform = Instantiate(platformPrefab, playerTransform.position - new Vector3(0.25f, 1.25f, 0f), Quaternion.identity);
         platforms.Enqueue(newPlatform);
         newPlatform.transform.SetParent(GameObject.Find("Platforms").transform);
+        platformCount++;
 
         Vector3 spawnPosition = new Vector3();
         for (int i = 1; i < maxPlatforms; i++)
@@ -63,107 +67,89 @@ public class SpawningManager : MonoBehaviour
             newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
             platforms.Enqueue(newPlatform);
             lastSpawnPositionY = spawnPosition.y;
+            platformCount++;
 
             newPlatform.transform.SetParent(GameObject.Find("Platforms").transform);
         }
     }
 
-void SpawnPlatform()
-{
-    if (platforms.Count == 0) return; // Ensure there are platforms in the queue
-
-    GameObject newPlatform = platforms.Dequeue();
-    platformsToEnemy -= 1;
-
-    // stop water movement if present
-    PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
-    platformMovement.ResetMovement();
-
-    // trigger chance to spawn coin
-    PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
-    platformCoin.SpawnCoin();
-
-    Vector3 spawnPosition = new Vector3();
-    spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
-    spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-
-    if (platformsToEnemy <= 0)
+    void SpawnPlatform()
     {
-        if (obstacles.Count > 0)
+        if (platforms.Count == 0) return; // Ensure there are platforms in the queue
+
+        GameObject newPlatform = platforms.Dequeue();
+        platformsToEnemy -= 1;
+
+        // stop water movement if present
+        PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
+        platformMovement.ResetMovement();
+
+        // trigger chance to spawn coin
+        PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
+        platformCoin.SpawnCoin();
+
+        Vector3 spawnPosition = new Vector3();
+        spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
+        spawnPosition.x = Random.Range(-levelWidth, levelWidth);
+
+        if (platformsToEnemy <= 0)
         {
-            GameObject enemy = obstacles[Random.Range(0, obstacles.Count)];
-            behaviourScript = enemy.GetComponent<EnemyBehaviour>();
+            if (obstacles.Count > 0)
+            {
+                GameObject enemy = obstacles[Random.Range(0, obstacles.Count)];
+                behaviourScript = enemy.GetComponent<EnemyBehaviour>();
 
-            Vector3 enemyPosition = new Vector3();
-            enemyPosition.y = spawnPosition.y;
-            enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
+                Vector3 enemyPosition = new Vector3();
+                enemyPosition.y = spawnPosition.y;
+                enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
 
-            int behaviourIndex = Random.Range(1, 5);      // 1 to #Behaviours+1
-            //int behaviourIndex = 4;
-            behaviourScript.changeBehaviour(behaviourIndex);
-            behaviourScript.changePosition(enemyPosition);
+                int behaviourIndex = Random.Range(1, 3);
+                behaviourScript.changeBehaviour(behaviourIndex);
+                behaviourScript.changePosition(enemyPosition);
 
-            platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f * averagePlatformsToEnemy, 1.3f * averagePlatformsToEnemy));
+                platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f * averagePlatformsToEnemy, 1.3f * averagePlatformsToEnemy));
+            }
+            else
+            {
+                Debug.LogWarning("No obstacles available to spawn.");
+            }
+        }
+
+        // Check if the platform count has reached the changeWhen value
+        if (platformCount >= changeWhen)
+        {
+            // Use the desert platform prefab
+            newPlatform = Instantiate(desertPlatformPrefab, spawnPosition, Quaternion.identity);
+            // Activate the library background if not already activated
+            if (!libraryBackground.activeSelf)
+            {
+                libraryBackground.SetActive(true);
+            }
         }
         else
         {
-            Debug.LogWarning("No obstacles available to spawn.");
+            // Use the regular platform prefab
+            newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
         }
+
+        newPlatform.transform.position = spawnPosition;
+        platforms.Enqueue(newPlatform);
+        lastSpawnPositionY = spawnPosition.y;
+        platformCount++;
     }
-
-    newPlatform.transform.position = spawnPosition;
-
-    platforms.Enqueue(newPlatform);
-    lastSpawnPositionY = spawnPosition.y;
-}
-    // void SpawnPlatform()
-    // {
-    //     GameObject newPlatform = platforms.Dequeue();
-    //     platformsToEnemy -= 1;
-    //     // stop water movement if present
-    //     PlatformMovement platformMovement = newPlatform.GetComponent<PlatformMovement>();
-    //     platformMovement.ResetMovement();
-    //     // trigger chance to spawn coin
-    //     PlatformCoin platformCoin = platformMovement.GetComponent<PlatformCoin>();
-    //     platformCoin.SpawnCoin();
-
-    //     Vector3 spawnPosition = new Vector3();
-    //     spawnPosition.y = lastSpawnPositionY + Random.Range(minY, maxY);
-    //     spawnPosition.x = Random.Range(-levelWidth, levelWidth);
-
-    //     if (platformsToEnemy <= 0){
-    //         GameObject enemy = obstacles[Random.Range(0,obstacles.Count)];
-    //         behaviourScript = enemy.GetComponent<EnemyBehaviour>();
-    //         Vector3 enemyPosition = new Vector3();
-    //         enemyPosition.y = spawnPosition.y;
-    //         enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
-    //         int behaviourIndex = Random.Range(1,3);
-    //         //Debug.Log("new enemy behaviour is: "+behaviourIndex);
-    //         behaviourScript.changeBehaviour(behaviourIndex);
-    //         behaviourScript.changePosition(enemyPosition);
-    //         platformsToEnemy = Mathf.RoundToInt(Random.Range(0.7f*averagePlatformsToEnemy , 1.3f*averagePlatformsToEnemy));
-    //     }
-    //     newPlatform.transform.position = spawnPosition;
-
-    //     platforms.Enqueue(newPlatform);
-    //     lastSpawnPositionY = spawnPosition.y;
-    // }
 
     IEnumerator CheckWaterLevel()
     {
         while (true)
         {
             yield return new WaitForSeconds(waterCheckInterval);
-            //Debug.Log("Checking water level... Water Y position: " + waterObject.transform.position.y);
             foreach (GameObject platform in platforms)
             {
-                //Debug.Log("Platform Y position: " + platform.transform.position.y);
                 if (platform.transform.position.y < waterObject.transform.position.y + 12f)
                 {
                     PlatformMovement platformMovement = platform.GetComponent<PlatformMovement>();
                     if (platformMovement != null)
                     {
-                        //Debug.Log(platform.name + " is below the water level.");
                         platformMovement.Engulf();
                     }
                 }
