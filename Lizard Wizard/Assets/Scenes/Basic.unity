@@ -157,7 +157,7 @@ MonoBehaviour:
   maxY: 2.5
   waterCheckInterval: 0.5
   maxPlatforms: 2
-  changeWhen: 20
+  changeWhen: 2
   obstacles: []
   enemyPrefab: {fileID: 5153879557421581909, guid: 83d0fabd652ba8d4e8c8489b3f78a66f, type: 3}
 --- !u!4 &125706473
@@ -1062,7 +1062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526016509543641801, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8796963896206903288, guid: 3db28e62a1c1cf146a872cd1581b5269, type: 3}
       propertyPath: m_LocalPosition.x

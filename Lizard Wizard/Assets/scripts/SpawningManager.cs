@@ -138,6 +138,7 @@ public class SpawningManager : MonoBehaviour
                 newPosition.y = 50;
                 libraryBackground.transform.position = newPosition;
                 libraryBackground.SetActive(true);
+                Debug.Log("TEST!");
             }
         }
         else
