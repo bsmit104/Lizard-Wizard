@@ -35,7 +35,7 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsCameraNearTop() && maxY > 0 && (gridTop - 10 < maxY))
+        if (IsCameraNearTop() && (maxY < 0 || gridTop - 10 < maxY))
         {
             MoveGridUp();
         }
