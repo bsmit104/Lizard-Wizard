@@ -4498,6 +4498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
+    - target: {fileID: 7541644554641442680, guid: 2e86f7cd401c4664fb6d76f3b7022f33, type: 3}
+      propertyPath: riseSpeed
+      value: 2.6
+      objectReference: {fileID: 0}
     - target: {fileID: 8001623299794649343, guid: 2e86f7cd401c4664fb6d76f3b7022f33, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
