@@ -159,6 +159,7 @@ MonoBehaviour:
   maxPlatforms: 2
   changeWhen: 20
   obstacles: []
+  enemyPrefab: {fileID: 5153879557421581909, guid: 83d0fabd652ba8d4e8c8489b3f78a66f, type: 3}
 --- !u!4 &125706473
 Transform:
   m_ObjectHideFlags: 0
