@@ -23,6 +23,10 @@ public class PlayerScore : MonoBehaviour
 
     }
 
+    public void ResetScore() {
+        currentScore = 0f;
+    }
+
     public float GetCurrentScore()
     {
         return currentScore;
