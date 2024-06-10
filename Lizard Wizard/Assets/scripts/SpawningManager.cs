@@ -22,7 +22,7 @@ public class SpawningManager : MonoBehaviour
     public List<GameObject> obstacles;
     public GameObject enemyPrefab;
     private int platformsToEnemy = 1;
-    private float averagePlatformsToEnemy = 15f;
+    private float averagePlatformsToEnemy = 10f;
     private EnemyBehaviour behaviourScript;
     private int platformCount = 0; // Track number of platforms spawned
 

@@ -22,6 +22,8 @@ public class PlayerHealth : MonoBehaviour
     public void ChangeHealth(int healthChange) {
         // can be positive or negative based on whether there are health packs or enemy hits
         currentHealth += healthChange;
-        Debug.Log("Health changed by " + healthChange);
+        if (currentHealth <= 0) {
+            PlayerManager.Instance.EndGame();
+        }
     }
 }
