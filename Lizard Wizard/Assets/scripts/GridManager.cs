@@ -21,6 +21,7 @@ public class GridManager : MonoBehaviour
     float columnPickerY;
     float bookcasePickerY;
     bool floor = true;
+    bool wall = true;
 
     // Start is called before the first frame update
     void Start()
@@ -110,14 +111,15 @@ public class GridManager : MonoBehaviour
                 // Library
                 for (int i = 0; i < grid.GetLength(0); i++)
                 {
-                    if (!(Mathf.PerlinNoise(0, (j + startRow + 1) / 10f) < 0.6f)) // next one is Dungeon
-                    {
-                        grid[i, j + (keepBottomRow ? 1 : 0)] = '-'; // Wall
-                        
-                    }
-                    else if (floor)
+
+                    if (!(Mathf.PerlinNoise(0, (j + startRow + 1) / 10f) < 0.6f) || floor)
                     {
                         grid[i, j + (keepBottomRow ? 1 : 0)] = '#'; // Floor
+                    }
+                    else if (wall) // next one is Dungeon
+                    {
+                        grid[i, j + (keepBottomRow ? 1 : 0)] = '-'; // Wall
+
                     }
                     else
                     {
@@ -132,13 +134,13 @@ public class GridManager : MonoBehaviour
                         }
                     }
                 }
+                wall = false;
                 floor = false;
                 if (Random.value < .05)
                 {
                     bookcasePickerY = Mathf.Floor(Random.value * 100f);
-                    floor = true;
+                    wall = true;
                 }
-                columnPickerY = Mathf.Floor(Random.value * 100f);
             }
             else
             {
