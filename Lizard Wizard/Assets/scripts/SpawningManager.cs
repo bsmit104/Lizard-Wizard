@@ -98,7 +98,8 @@ void SpawnPlatform()
             enemyPosition.y = spawnPosition.y;
             enemyPosition.x = ((spawnPosition.x > 0) ? -levelWidth : 0) + Random.Range(0, levelWidth);
 
-            int behaviourIndex = Random.Range(1, 3);
+            int behaviourIndex = Random.Range(1, 5);      // 1 to #Behaviours+1
+            //int behaviourIndex = 4;
             behaviourScript.changeBehaviour(behaviourIndex);
             behaviourScript.changePosition(enemyPosition);
 
