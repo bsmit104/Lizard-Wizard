@@ -23,9 +23,12 @@ public class GridManager : MonoBehaviour
     bool floor = true;
     bool wall = true;
 
+    float startY;
+
     // Start is called before the first frame update
     void Start()
     {
+        startY = transform.position.y;
         InitializeLookup();
         gridTop = numRows;
         grid = new char[numCols, numRows];
@@ -36,7 +39,7 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsCameraNearTop() && (maxY < 0 || gridTop - 10 < maxY))
+        if (IsCameraNearTop() && (maxY < 0 || gridTop + startY < maxY))
         {
             MoveGridUp();
         }
@@ -48,7 +51,7 @@ public class GridManager : MonoBehaviour
         float cameraTop = cameraPos.y + mainCamera.orthographicSize;
 
         // Check if the camera is within 5 units of the top of the grid
-        return cameraTop > gridTop - 20;
+        return cameraTop > gridTop + startY - 20;
     }
 
     void MoveGridUp()
@@ -71,10 +74,6 @@ public class GridManager : MonoBehaviour
         // Draw the new grid
         DrawGrid(grid, gridTop - 1);
         gridTop += numRows / 2;
-
-        Vector3 newPosition = tilemap.transform.position;
-        newPosition.y = 0;
-        tilemap.transform.position = newPosition;
     }
 
     void ClearBottomRows()
